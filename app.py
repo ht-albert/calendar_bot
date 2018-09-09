@@ -24,6 +24,11 @@ def send_welcome(mess):
     bot.send_message(mess.chat.id, "Hello world!")
 
 
+@app.route('/')
+def hello():
+    return 'Hello World!'
+
+
 @app.route('/' + config.bot_token, methods=['POST'])
 def webhook():
     json_string = request.get_data().decode('utf-8')
