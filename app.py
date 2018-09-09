@@ -5,8 +5,7 @@ __author__ = "ht.albert"
 
 import time
 from flask import Flask, request
-import telebot
-from config import Config
+from bot_app import *
 
 config = Config()
 
@@ -15,13 +14,6 @@ telebot.apihelper.proxy = {
 }
 
 app = Flask(__name__)
-
-bot = telebot.TeleBot(config.bot_token)
-
-
-@bot.message_handler(commands=['help', 'start'])
-def send_welcome(mess):
-    bot.send_message(mess.chat.id, "Hello world!")
 
 
 @app.route('/')
