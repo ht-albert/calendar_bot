@@ -43,4 +43,4 @@ if __name__ == '__main__':
     else:
         bot.set_webhook(url=config.host + config.bot_token)
         time.sleep(0.1)
-        app.run(port=5000, debug=True)
+        app.run(host='0.0.0.0', port=5000, debug=True)
