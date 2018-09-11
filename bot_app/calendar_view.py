@@ -74,10 +74,9 @@ class Calendar:
     def __get_day(self, day, month, year):
         """ return emoji if current day """
         date = self.today.today().replace(day=day, month=month, year=year).date()
+        ret = str()
         if self.today.date() == date:
-            i, j = divmod(day, 10)
             # emoji format for current date
-            ret = (emoji.emojize(':keycap_{}:'.format(i)) if i else '') + emoji.emojize(':keycap_{}:'.format(j))
-            return ret
+            ret = emoji.emojize(':round_pushpin:')
 
-        return str(day)
+        return ret + str(day)
