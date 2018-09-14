@@ -82,9 +82,9 @@ class Calendar:
         return ret + str(day)
 
 
-class DayView:
+class DayView(object):
 
-    def __init__(self, day, month, year):
+    def __init__(self, year, month, day):
         self.day = day
         self.month = month
         self.year = year
@@ -92,17 +92,19 @@ class DayView:
 
     @property
     def title(self):
-        return 'Информация на {}-{}-{}'.format(self.day, self.month, self.year)
+        return 'Информация на {}/{}/{}'.format(self.day, self.month, self.year)
 
     def __callback_day(self, next_day):
-        date = self.date - dt.timedelta(days=1) if next_day else self.date + dt.timedelta(days=1)
+        date = self.date + dt.timedelta(days=1) if next_day else self.date - dt.timedelta(days=1)
         return 'day:{year}-{month}-{day}'.format(year=date.year, month=date.month, day=date.day)
 
     @property
     def footer(self):
         markup = types.InlineKeyboardMarkup()
-        row = list().append(types.InlineKeyboardButton('<', callback_data=self.__callback_day(False)))
-        row.append(types.InlineKeyboardButton('Calendar', callback_data="call:"))
+        row = list()
+        row.append(types.InlineKeyboardButton('<', callback_data=self.__callback_day(False)))
+        row.append(types.InlineKeyboardButton('Calendar',
+                                              callback_data="call:{}-{}-{}".format(self.year, self.month, self.day)))
         row.append(types.InlineKeyboardButton('>', callback_data=self.__callback_day(True)))
         markup.row(*row)
         return markup
