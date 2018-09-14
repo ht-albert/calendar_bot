@@ -36,7 +36,7 @@ class Calendar:
             for day in week:
                 item = types.InlineKeyboardButton(" ", callback_data="ignore") if day == 0 \
                     else types.InlineKeyboardButton(self.__get_day(day, month, year),
-                                                    callback_data="day_info:{}-{}-{}".format(year, month, day))
+                                                    callback_data="day:{}-{}-{}".format(year, month, day))
                 row.append(item)
             markup.row(*row)
 
@@ -80,3 +80,29 @@ class Calendar:
             ret = emoji.emojize(':round_pushpin:')
 
         return ret + str(day)
+
+
+class DayView:
+
+    def __init__(self, day, month, year):
+        self.day = day
+        self.month = month
+        self.year = year
+        self.date = dt.datetime.today().date().replace(day=day, month=month, year=year)
+
+    @property
+    def title(self):
+        return 'Информация на {}-{}-{}'.format(self.day, self.month, self.year)
+
+    def __callback_day(self, next_day):
+        date = self.date - dt.timedelta(days=1) if next_day else self.date + dt.timedelta(days=1)
+        return 'day:{year}-{month}-{day}'.format(year=date.year, month=date.month, day=date.day)
+
+    @property
+    def footer(self):
+        markup = types.InlineKeyboardMarkup()
+        row = list().append(types.InlineKeyboardButton('<', callback_data=self.__callback_day(False)))
+        row.append(types.InlineKeyboardButton('Calendar', callback_data="call:"))
+        row.append(types.InlineKeyboardButton('>', callback_data=self.__callback_day(True)))
+        markup.row(*row)
+        return markup
