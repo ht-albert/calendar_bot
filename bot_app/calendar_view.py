@@ -102,7 +102,7 @@ class DayView(object):
 
     @property
     def title(self):
-        return 'Информация на {}/{}/{}'.format(self.day, self.month, self.year)
+        return 'Events on {}/{}/{}'.format(self.day, self.month, self.year)
 
     def __callback_day(self, next_day):
         date = self.date + dt.timedelta(days=1) if next_day else self.date - dt.timedelta(days=1)
