@@ -4,7 +4,6 @@ __author__ = "ht.albert"
 
 import calendar
 from telebot import types
-import emoji
 import datetime as dt
 
 
@@ -22,7 +21,11 @@ class Calendar:
         markup = types.InlineKeyboardMarkup()
 
         row = list()
-        row.append(types.InlineKeyboardButton(calendar.month_name[month] + " " + str(year), callback_data="ignore"))
+        row.append(
+            types.InlineKeyboardButton(
+                calendar.month_name[month] + " " + str(year), callback_data="ignore",
+            )
+        )
         markup.row(*row)
 
         row = []
@@ -35,22 +38,29 @@ class Calendar:
             row = []
             for day in week:
                 item = types.InlineKeyboardButton(" ", callback_data="ignore") if day == 0 \
-                    else types.InlineKeyboardButton(self.__get_day(day, month, year),
-                                                    callback_data="day:{}-{}-{}".format(year, month, day))
+                    else types.InlineKeyboardButton(
+                        day, callback_data="day:{}-{}-{}".format(year, month, day)
+                    )
                 row.append(item)
             markup.row(*row)
 
         row = list()
-        row.append(types.InlineKeyboardButton("<", callback_data="prev:{}-{}-{}".format(year, month, 0)))
+        row.append(types.InlineKeyboardButton(
+            "<", callback_data="prev:{}-{}-{}".format(year, month, 0)),
+        )
         row.append(types.InlineKeyboardButton("Menu", callback_data="ignore"))
-        row.append(types.InlineKeyboardButton(">", callback_data="next:{}-{}-{}".format(year, month, 0)))
+        row.append(types.InlineKeyboardButton(
+            ">", callback_data="next:{}-{}-{}".format(year, month, 0)),
+        )
         markup.row(*row)
 
         return markup
 
     def pagination(self, command):
         year, mouth, day = self.get_day_from_commands(command)
-        markup = self.__next_month(year, mouth) if command[0:4] == 'next' else self.__prev_month(year, mouth)
+        markup = self.__next_month(year, mouth) if command[0:4] == 'next' else self.__prev_month(
+            year, mouth,
+        )
         return markup
 
     def __next_month(self, year, month):
@@ -70,16 +80,6 @@ class Calendar:
         """ day from command / commands format name:year-month-day """
         year, mouth, day = (int(_) for _ in command[command.find(':')+1:].split('-'))
         return year, mouth, day
-
-    def __get_day(self, day, month, year):
-        """ return emoji if current day """
-        date = self.today.today().replace(day=day, month=month, year=year).date()
-        ret = str()
-        if self.today.date() == date:
-            # emoji format for current date
-            ret = emoji.emojize(':round_pushpin:')
-
-        return ret + str(day)
 
 
 class DayView(object):
@@ -103,8 +103,9 @@ class DayView(object):
         markup = types.InlineKeyboardMarkup()
         row = list()
         row.append(types.InlineKeyboardButton('<', callback_data=self.__callback_day(False)))
-        row.append(types.InlineKeyboardButton('Calendar',
-                                              callback_data="call:{}-{}-{}".format(self.year, self.month, self.day)))
+        row.append(types.InlineKeyboardButton(
+            'Calendar', callback_data="call:{}-{}-{}".format(self.year, self.month, self.day)),
+        )
         row.append(types.InlineKeyboardButton('>', callback_data=self.__callback_day(True)))
         markup.row(*row)
         return markup
