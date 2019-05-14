@@ -26,7 +26,7 @@ def get_day_from_commands(command):
 @bot.message_handler(commands=['start'])
 def calendar(mess):
     keyboard = Calendar().create()
-    bot.reply_to(mess.chat.id, title, reply_markup=keyboard)
+    bot.reply_to(mess, title, reply_markup=keyboard)
 
 
 @bot.callback_query_handler(func=lambda call: get_command(call.data) in ['prev', 'next'])
