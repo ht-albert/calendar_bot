@@ -6,10 +6,11 @@ import telebot
 
 from config import Config
 from .calendar_view import Calendar, DayView
+import emoji
 
 config = Config()
 bot = telebot.TeleBot(config.bot_token)
-title = "Your calendar"
+title = 'Your Calendar ' + emoji.emojize(':calendar:')
 
 
 def get_command(callback):
