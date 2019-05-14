@@ -5,6 +5,7 @@ __author__ = "ht.albert"
 import calendar
 from telebot import types
 import datetime as dt
+import emoji
 
 
 class Calendar:
@@ -39,7 +40,8 @@ class Calendar:
             for day in week:
                 item = types.InlineKeyboardButton(" ", callback_data="ignore") if day == 0 \
                     else types.InlineKeyboardButton(
-                        day, callback_data="day:{}-{}-{}".format(year, month, day)
+                        self.__get_day(day, month, year),
+                        callback_data="day:{}-{}-{}".format(year, month, day),
                     )
                 row.append(item)
             markup.row(*row)
@@ -80,6 +82,14 @@ class Calendar:
         """ day from command / commands format name:year-month-day """
         year, mouth, day = (int(_) for _ in command[command.find(':')+1:].split('-'))
         return year, mouth, day
+
+    def __get_day(self, day, month, year):
+        """ return emoji if current day """
+        date = self.today.today().replace(day=day, month=month, year=year).date()
+        # emoji format for current date
+        ret = emoji.emojize(':round_pushpin:') if self.today.date() == date else ''
+
+        return ret + str(day)
 
 
 class DayView(object):
