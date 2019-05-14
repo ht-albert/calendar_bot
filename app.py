@@ -5,7 +5,7 @@ __author__ = "ht.albert"
 
 import time
 from flask import Flask, request
-from bot_app import *
+from bot_app import bot, telebot, Config
 
 config = Config()
 

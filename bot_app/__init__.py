@@ -6,11 +6,10 @@ import telebot
 
 from config import Config
 from .calendar_view import Calendar, DayView
-import emoji
 
 config = Config()
 bot = telebot.TeleBot(config.bot_token)
-title = emoji.emojize(':calendar:')
+title = "Your calendar"
 
 
 def get_command(callback):
@@ -41,7 +40,9 @@ def day_info(call):
     y, m, d = get_day_from_commands(call.data)
     date_obj = DayView(y, m, d)
     keyboard = date_obj.footer
-    bot.edit_message_text(date_obj.title, call.from_user.id, call.message.message_id, reply_markup=keyboard)
+    bot.edit_message_text(
+        date_obj.title, call.from_user.id, call.message.message_id, reply_markup=keyboard,
+    )
     bot.answer_callback_query(call.id, text="")
 
 
@@ -49,5 +50,7 @@ def day_info(call):
 def calendar_with_day(call):
     y, m, d = get_day_from_commands(call.data)
     keyboard = Calendar().create(year=y, month=m)
-    bot.edit_message_text(title, call.from_user.id, call.message.message_id, reply_markup=keyboard)
+    bot.edit_message_text(
+        title, call.from_user.id, call.message.message_id, reply_markup=keyboard,
+    )
     bot.answer_callback_query(call.id, text="")
